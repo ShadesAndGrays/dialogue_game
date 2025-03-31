@@ -1,0 +1,154 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7ml8im6w8hxc"]
+
+[ext_resource type="Script" uid="uid://cahgv5y4tf2o6" path="res://DialogueBuilder/script/script_builder.gd" id="1_8nhxs"]
+[ext_resource type="Texture2D" uid="uid://cr60r8rm80gw4" path="res://DialogueBuilder/asset/cross-hair.png" id="2_oydtx"]
+[ext_resource type="Theme" uid="uid://j6l6bewon5v3" path="res://misc/main_theme.tres" id="2_xcg34"]
+
+[node name="ScriptBuilder" type="Node2D"]
+script = ExtResource("1_8nhxs")
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="Dialogues" type="Marker2D" parent="CanvasLayer"]
+unique_name_in_owner = true
+position = Vector2(164, 152)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(573, 322)
+
+[node name="SpawnMarker" type="Marker2D" parent="Camera2D"]
+unique_name_in_owner = true
+position = Vector2(7, 7)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_xcg34")
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/UI/CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_oydtx")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/UI/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="info" type="Control" parent="UI/UI/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_xcg34")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/UI/MarginContainer/VBoxContainer/HBoxContainer/info"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 100.0
+grow_vertical = 2
+
+[node name="HideInfo" type="Button" parent="UI/UI/MarginContainer/VBoxContainer/HBoxContainer/info/VBoxContainer"]
+layout_mode = 2
+text = "toggle"
+
+[node name="InfoContainer" type="ScrollContainer" parent="UI/UI/MarginContainer/VBoxContainer/HBoxContainer/info/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/UI/MarginContainer/VBoxContainer/HBoxContainer/info/VBoxContainer/InfoContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InfoLabel" type="Label" parent="UI/UI/MarginContainer/VBoxContainer/HBoxContainer/info/VBoxContainer/InfoContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+autowrap_mode = 3
+
+[node name="HSeparator" type="HSeparator" parent="UI/UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+mouse_filter = 2
+
+[node name="Control" type="PanelContainer" parent="UI/UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("2_xcg34")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/UI/MarginContainer/VBoxContainer/Control"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="AddDialogueButton" type="Button" parent="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Add Dialogue"
+
+[node name="AddChoiceButton" type="Button" parent="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Add Choice"
+
+[node name="LoadScriptButton" type="Button" parent="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Load Script"
+
+[node name="SaveScriptButton" type="Button" parent="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Save Script"
+
+[connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/HBoxContainer/info/VBoxContainer/HideInfo" to="." method="_on_hide_info_pressed"]
+[connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/AddDialogueButton" to="." method="_on_add_dialogue_button_pressed"]
+[connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/AddChoiceButton" to="." method="_on_add_choice_button_pressed"]
+[connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/LoadScriptButton" to="." method="_on_load_script_button_pressed"]
+[connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/SaveScriptButton" to="." method="_on_save_script_button_pressed"]

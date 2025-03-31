@@ -1,0 +1,100 @@
+[gd_scene load_steps=5 format=3 uid="uid://brsl6f2p5e3j6"]
+
+[ext_resource type="Script" uid="uid://bbdwh3mic5jca" path="res://DialogueBuilder/script/choice.gd" id="1_1afye"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b6dxj"]
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+bg_color = Color(0.871802, 0.337772, 0.272067, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jie2v"]
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+bg_color = Color(0.97407, 0.689363, 0.641359, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pq34t"]
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+bg_color = Color(0.388228, 0.110787, 0.0797746, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="ChoiceOption" type="PanelContainer"]
+offset_right = 284.0
+offset_bottom = 41.0
+script = ExtResource("1_1afye")
+
+[node name="NodeContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NodeContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="NodeContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="NodeContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="DeleteButton" type="Button" parent="NodeContainer/HBoxContainer/VBoxContainer2/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_b6dxj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jie2v")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pq34t")
+theme_override_styles/normal = SubResource("StyleBoxFlat_b6dxj")
+text = "x"
+
+[node name="label" type="Label" parent="NodeContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "#c100"
+
+[node name="Message" type="TextEdit" parent="NodeContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter choice"
+wrap_mode = 1
+scroll_fit_content_height = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NodeContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="NodeContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="LinkButton" type="Button" parent="NodeContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "link"

@@ -1,0 +1,96 @@
+[gd_scene load_steps=5 format=3 uid="uid://gqvis7ya8luw"]
+
+[ext_resource type="Theme" uid="uid://j6l6bewon5v3" path="res://misc/main_theme.tres" id="1_ql4ju"]
+[ext_resource type="Script" uid="uid://dpbtgdwo8t18i" path="res://DialogueBuilder/script/choice_node.gd" id="2_ql4ju"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_e35fm"]
+font_size = 13
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e35fm"]
+bg_color = Color(1, 1, 1, 0.0901961)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="ChoiceNode" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+theme = ExtResource("1_ql4ju")
+script = ExtResource("2_ql4ju")
+
+[node name="label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = -1.0
+offset_top = -31.0
+offset_right = 152.0
+offset_bottom = -12.0
+text = "#12"
+label_settings = SubResource("LabelSettings_e35fm")
+
+[node name="NodeContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 192.0
+
+[node name="Focus" type="Panel" parent="NodeContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_e35fm")
+
+[node name="MarginContainer" type="MarginContainer" parent="NodeContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NodeContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NodeContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Message" type="TextEdit" parent="NodeContainer/MarginContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 50.21)
+layout_mode = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 5.0
+placeholder_text = "Enter Msg"
+wrap_mode = 1
+scroll_fit_content_height = true
+
+[node name="ChoiceContainer" type="VBoxContainer" parent="NodeContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NodeContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LinkButton" type="Button" parent="NodeContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "link"
+
+[node name="DeleteButton" type="Button" parent="NodeContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "delete"
+
+[node name="NewChoiceButton" type="Button" parent="NodeContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "add choice"

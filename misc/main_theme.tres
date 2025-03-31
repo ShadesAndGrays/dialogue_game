@@ -1,0 +1,63 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://j6l6bewon5v3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkmxq"]
+content_margin_left = 5.0
+content_margin_top = 2.0
+content_margin_right = 5.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 0.921569)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a1t8i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a1t8i"]
+bg_color = Color(0, 0, 0, 0.835294)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e0i2v"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(1, 1, 1, 0.14902)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uctte"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.415686, 0.427451, 0.427451, 0.0941176)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hkmxq"]
+
+[resource]
+Button/styles/normal = SubResource("StyleBoxFlat_hkmxq")
+HSeparator/styles/separator = SubResource("StyleBoxEmpty_a1t8i")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_a1t8i")
+TextEdit/styles/focus = SubResource("StyleBoxFlat_e0i2v")
+TextEdit/styles/normal = SubResource("StyleBoxFlat_uctte")
+VSeparator/styles/separator = SubResource("StyleBoxEmpty_hkmxq")
