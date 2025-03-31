@@ -1,8 +1,8 @@
 # Todo
 
-[ ] Dialogue system
+[x] Dialogue system
     [x] Dialogue message system
-    [ ] Dialogue choice system
+    [x] Dialogue choice system
 [ ] Scene changer
 
 # story

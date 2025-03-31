@@ -1,4 +1,4 @@
-extends Control
+class_name Dialogue extends Control
 
 var dialogue = {
     msg = "hero",
@@ -10,7 +10,7 @@ var dialogue = {
     }
 @onready var button: Button = $Button
 
-signal finished(choice:String)
+signal finished(choice:Array[String])
 @onready var timer: Timer = $Timer
 
 @onready var message_label: Label = %MessageLabel
@@ -47,8 +47,9 @@ func _on_timer_timeout() -> void:
             choices_panel.visible = true
             for i in dialogue.get("choice"):
                 var button = Button.new()
-                button.text = i.get("msg","Error")
-                button.pressed.connect(finished.emit.bind(i.get("next")))
+                var choice =  i.get(i.keys()[0])
+                button.text = choice.get("msg","Error")
+                button.pressed.connect(finished.emit.bind(choice.get("next")))
                 choices_container.add_child(button)
 
 

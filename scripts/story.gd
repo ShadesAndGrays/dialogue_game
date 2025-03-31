@@ -15,6 +15,18 @@ var dialogue = {
         }
 }
 
+func load_story(path:String):
+    var file = FileAccess.open(path,FileAccess.READ)
+    if not file.is_open():
+        printerr("File failed to open", file)
+        return
+    dialogue = JSON.parse_string(file.get_as_text())
+    
+func _init() -> void:
+    load_story("res://DialogueBuilder/script.json")
+    print(dialogue)
+    pass
+
 func get_dialogue(key:String):
     if dialogue.has(key):
         return dialogue.get(key)
