@@ -1,5 +1,6 @@
 class_name Dialogue extends Control
 
+
 var dialogue = {
     msg = "hero",
     choice = [
@@ -19,11 +20,19 @@ signal finished(choice:Array[String])
 @onready var choices_container: VBoxContainer = %ChoicesContainer
 @onready var choices_panel: PanelContainer = %ChoicesPanel
 
+@onready var speaker_container: PanelContainer = %SpeakerContainer
+@onready var speaker_label: Label = %SpeakerLabel
+
 func _ready() -> void:
     message_label.text = dialogue.get("msg")
     message_label.visible_characters = 0
     if dialogue.has("choice"):
         $Button.visible = false
+    if dialogue.has("speaker"):
+        var speaker = str(dialogue.get("speaker")) 
+        if not speaker.is_empty():
+            speaker_label.text = speaker
+            speaker_container.visible = true 
     pass
 
 
@@ -56,3 +65,8 @@ func _on_timer_timeout() -> void:
 func _on_delay_timeout() -> void:
     $Button/AnimationPlayer.play("flash")
     pass # Replace with function body.
+
+func clear():
+    speaker_container.visible = false 
+    $Button.visible = false
+    pass

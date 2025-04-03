@@ -1,0 +1,1 @@
+{"d#1":{"msg":"CHAPTER 1:  A New Hatchling","next":["d#2"],"speaker":"","x":162.0,"y":164.0},"d#2":{"msg":"*beep*.. * beep*","next":["d#3"],"speaker":"Alarm","x":478.0,"y":97.0},"d#3":{"msg":"*beep* *beep*","next":["d#4"],"speaker":"Alarm","x":786.0,"y":161.0},"d#4":{"msg":"Ugh... fine. I'm up","next":["0"],"speaker":"???","x":1113.0,"y":215.0}}

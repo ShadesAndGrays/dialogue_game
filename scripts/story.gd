@@ -22,10 +22,8 @@ func load_story(path:String):
         return
     dialogue = JSON.parse_string(file.get_as_text())
     
-func _init() -> void:
-    load_story("res://DialogueBuilder/script.json")
-    print(dialogue)
-    pass
+func _init(path:String) -> void:
+    load_story(path)
 
 func get_dialogue(key:String):
     if dialogue.has(key):

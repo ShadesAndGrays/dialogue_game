@@ -139,6 +139,10 @@ text = "Add Dialogue"
 layout_mode = 2
 text = "Add Choice"
 
+[node name="AddEventButton" type="Button" parent="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Add Event"
+
 [node name="LoadScriptButton" type="Button" parent="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Load Script"
@@ -147,8 +151,15 @@ text = "Load Script"
 layout_mode = 2
 text = "Save Script"
 
+[node name="AutoSaveTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 150.0
+autostart = true
+
 [connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/HBoxContainer/info/VBoxContainer/HideInfo" to="." method="_on_hide_info_pressed"]
 [connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/AddDialogueButton" to="." method="_on_add_dialogue_button_pressed"]
 [connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/AddChoiceButton" to="." method="_on_add_choice_button_pressed"]
+[connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/AddEventButton" to="." method="_on_add_event_button_pressed"]
 [connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/LoadScriptButton" to="." method="_on_load_script_button_pressed"]
 [connection signal="pressed" from="UI/UI/MarginContainer/VBoxContainer/Control/MarginContainer/VBoxContainer/HBoxContainer/SaveScriptButton" to="." method="_on_save_script_button_pressed"]
+[connection signal="timeout" from="AutoSaveTimer" to="." method="_on_auto_save_timer_timeout"]

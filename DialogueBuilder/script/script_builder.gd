@@ -4,6 +4,7 @@ var middle_clicked = false
 @onready var camera_2d: Camera2D = $Camera2D
 const DIALOGUE_NODE = preload("res://DialogueBuilder/scene/dialogue_node.tscn")
 const CHOICE_NODE = preload("res://DialogueBuilder/scene/choice_node.tscn")
+const EVENT_NODE = preload("res://DialogueBuilder/scene/event_node.tscn")
 @onready var dialogues: Marker2D = %Dialogues
 @onready var spawn_marker: Marker2D = %SpawnMarker
 @onready var info_label: Label = %InfoLabel
@@ -15,22 +16,30 @@ var current_link:DialogueNode = null
 
 var current_index = 1
 
-var save_file_dialog: FileDialog
-var load_file_dialog: FileDialog
+var save_file_dialog: FileDialog = FileDialog.new()
+var load_file_dialog: FileDialog = FileDialog.new()
+var current_file:String = ""
+
+func _ready() -> void:
+    load_dialogues()
+
+func load_dialogues():
+    save_file_dialog.add_filter("*.json")
+    add_child(save_file_dialog)
+    save_file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+    save_file_dialog.file_selected.connect(save_to)
+
+    load_file_dialog.use_native_dialog = true
+    add_child(load_file_dialog)
+    load_file_dialog.add_filter("*.json")
+    load_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+    load_file_dialog.file_selected.connect(load_save)
 
 func extract_name(d:Node) -> String:
     return str(d.name)
 
-func save():
-
-    if not is_instance_valid(save_file_dialog):
-        save_file_dialog = FileDialog.new()
-        save_file_dialog.add_filter("*.json")
-        add_child(save_file_dialog)
-        save_file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-
-    save_file_dialog.show()
-    var file = await save_file_dialog.file_selected
+func save_to(file):
+    current_file = file
     file = FileAccess.open(file,FileAccess.WRITE_READ)
 
     var content = {}
@@ -38,9 +47,8 @@ func save():
         var key_dict = {}
         if is_instance_of(key,ChoiceNode):
             key_dict = format_choice(key)
-        
         elif is_instance_of(key,ChoiceOption):
-            pass
+            continue
         else:
             key_dict = format_dialogue(key)
         content.merge(key_dict)
@@ -82,17 +90,10 @@ func format_option(option:ChoiceOption):
         next.append(extract_name(value))
     return key_dict
     
-func load_save():
-    if not is_instance_valid(load_file_dialog):
-        load_file_dialog = FileDialog.new()
-        add_child(load_file_dialog)
-        load_file_dialog.add_filter("*.json")
-        load_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-
-    load_file_dialog.show()
-    var file = await load_file_dialog.file_selected
+func load_save(file):
     if not FileAccess.file_exists(file):
         print("file does not exsist",file)
+    current_file = file
     file = FileAccess.open(file,FileAccess.READ)
     var content = JSON.parse_string(file.get_as_text()) as Dictionary
     for id:String in content.keys(): # creates top link list heads
@@ -108,6 +109,10 @@ func load_save():
             "d":
                 var dialogue:DialogueNode = spawn_dialogue()
                 dialogue.set_from_json(id,content.get(id))
+            "e":
+                var event:EventNode = spawn_event()
+                event.set_from_json(id,content.get(id))
+
     for id:String in content.keys(): # create link list values 
         var id_arr = id.split("#")
         match  id_arr[0]:
@@ -124,6 +129,12 @@ func load_save():
                     pass
                 pass
             "d":
+                for i in content.get(id).get("next"):
+                    if i  == "0":
+                        continue
+                    link_nodes(dialogues.get_node(id))
+                    link_nodes(dialogues.get_node(i))
+            "e":
                 for i in content.get(id).get("next"):
                     if i  == "0":
                         continue
@@ -204,6 +215,17 @@ func spawn_choice():
     c.choice_option_created.connect(_on_choice_option_created.bind(c))
     return c
 
+func spawn_event():
+    var e = EVENT_NODE.instantiate()
+    e.name = "e#"+str(current_index)
+    current_index += 1
+    dialogues.add_child(e)
+    dialogue_nodes.set(e,[])
+    e.global_position = spawn_marker.global_position - e.node_container.get_rect().end/2.0
+    e.link_attempt.connect(link_nodes)
+    e.free_me.connect(free_node)
+    return e
+
 func _on_choice_option_created(choice_option:ChoiceOption,choice_node:ChoiceNode):
     choice_option.name = "co#"+str(current_index)
     choice_option.label.text = choice_option.name # don't know where to place this 
@@ -244,15 +266,24 @@ func _on_add_dialogue_button_pressed() -> void:
 func _on_add_choice_button_pressed() -> void:
     spawn_choice()
 
+func _on_add_event_button_pressed() -> void:
+    spawn_event()
+
 func _on_hide_info_pressed() -> void:
     info_container.visible = not info_container.visible
 
-
 func _on_save_script_button_pressed() -> void:
-    save()
-    pass # Replace with function body.
-
+    save_file_dialog.show()
 
 func _on_load_script_button_pressed() -> void:
-    load_save()
-    pass # Replace with function body.
+    load_file_dialog.show()
+
+func _on_auto_save_timer_timeout() -> void:
+    if !current_file.is_empty():
+        save_to(current_file)
+        var autosave_label = Label.new()
+        autosave_label.text = "Saving"
+        autosave_label.position.x += 300
+        add_child(autosave_label)
+        await get_tree().create_timer(3).timeout
+        autosave_label.queue_free()

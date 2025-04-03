@@ -1,0 +1,129 @@
+[gd_scene load_steps=10 format=3 uid="uid://ct6fxshbrf4ni"]
+
+[ext_resource type="Theme" uid="uid://j6l6bewon5v3" path="res://misc/main_theme.tres" id="1_pb780"]
+[ext_resource type="Script" uid="uid://x83j4onuf5no" path="res://scripts/event_overlay.gd" id="2_1b20f"]
+[ext_resource type="Texture2D" uid="uid://b3i8lxfju7xuc" path="res://assets/bell2.svg" id="3_a5f8g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_olp03"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.992157, 0.941176, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Shader" id="Shader_1cwpq"]
+code = "shader_type canvas_item;
+
+uniform vec4 color: source_color;
+
+void fragment() {
+    COLOR = vec4(color.rgb,COLOR.a);
+	// Called for every pixel the material is visible on.
+}
+
+//void light() {
+//	// Called for every pixel for every light affecting the CanvasItem.
+//	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8pb3m"]
+shader = SubResource("Shader_1cwpq")
+shader_parameter/color = Color(0.994163, 0.942044, 0, 1)
+
+[sub_resource type="Animation" id="Animation_pb780"]
+resource_name = "pop"
+length = 4.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PanelContainer:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(1186, -0.25, 0, 0.25, 0, 900, -0.266667, -110.781, 0.3, 30.4537, 912.799, -0.25, 0, 0.25, 0, 912.799, -0.25, 0, 0.25, 0, 895.145, -0.333333, 8.3858, 0.266667, -26.9229, 1186, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.566667, 1.1, 3, 3.43333, 3.9)
+}
+
+[sub_resource type="Animation" id="Animation_1b20f"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PanelContainer:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(940, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a5f8g"]
+_data = {
+&"RESET": SubResource("Animation_1b20f"),
+&"pop": SubResource("Animation_pb780")
+}
+
+[node name="EventOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_pb780")
+script = ExtResource("2_1b20f")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 34.0
+offset_top = 57.0
+offset_right = 246.0
+offset_bottom = 97.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_olp03")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HBoxContainer/MarginContainer"]
+material = SubResource("ShaderMaterial_8pb3m")
+layout_mode = 2
+texture = ExtResource("3_a5f8g")
+expand_mode = 3
+
+[node name="LabelName" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/LabelName"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.992157, 0.941176, 0, 1)
+text = "EVENT OCCURED"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_a5f8g")
+}
+autoplay = "pop"

@@ -80,6 +80,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Enter choice"
+middle_mouse_paste_enabled = false
 wrap_mode = 1
 scroll_fit_content_height = true
 
