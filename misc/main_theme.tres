@@ -1,4 +1,7 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://j6l6bewon5v3"]
+[gd_resource type="Theme" load_steps=14 format=3 uid="uid://j6l6bewon5v3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f31qu"]
+bg_color = Color(0.00392157, 0.00784314, 0.00784314, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkmxq"]
 content_margin_left = 5.0
@@ -17,6 +20,16 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a1t8i"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xb1r6"]
+bg_color = Color(0.597898, 0.591822, 0.589213, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s77dj"]
+bg_color = Color(0.00392157, 0.00784314, 0.00784314, 1)
+border_color = Color(0.960784, 0.960784, 0.960784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t4b1j"]
+bg_color = Color(0.791999, 0.791999, 0.791999, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a1t8i"]
 bg_color = Color(0, 0, 0, 0.835294)
 border_width_left = 1
@@ -29,6 +42,14 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 corner_detail = 10
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_hkmxq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5pw3"]
+bg_color = Color(0.00392157, 0.00784314, 0.00784314, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_a1t8i"]
+color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e0i2v"]
 content_margin_left = 5.0
@@ -55,9 +76,17 @@ corner_radius_bottom_left = 5
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hkmxq"]
 
 [resource]
+AcceptDialog/styles/panel = SubResource("StyleBoxFlat_f31qu")
 Button/styles/normal = SubResource("StyleBoxFlat_hkmxq")
 HSeparator/styles/separator = SubResource("StyleBoxEmpty_a1t8i")
+MenuBar/styles/hover = SubResource("StyleBoxFlat_xb1r6")
+MenuBar/styles/normal = SubResource("StyleBoxFlat_s77dj")
+MenuBar/styles/pressed = SubResource("StyleBoxFlat_t4b1j")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_a1t8i")
+PopupMenu/styles/hover = null
+PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxLine_hkmxq")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_v5pw3")
+PopupMenu/styles/separator = SubResource("StyleBoxLine_a1t8i")
 TextEdit/styles/focus = SubResource("StyleBoxFlat_e0i2v")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_uctte")
 VSeparator/styles/separator = SubResource("StyleBoxEmpty_hkmxq")

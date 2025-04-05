@@ -9,6 +9,7 @@ const EVENT_NODE = preload("res://DialogueBuilder/scene/event_node.tscn")
 @onready var spawn_marker: Marker2D = %SpawnMarker
 @onready var info_label: Label = %InfoLabel
 @onready var info_container: ScrollContainer = %InfoContainer
+@onready var menu_toolbar: Control = %MenuToolbar
 
 var dialogue_nodes:Dictionary[DialogueNode,Array] = {} 
 
@@ -20,9 +21,13 @@ var save_file_dialog: FileDialog = FileDialog.new()
 var load_file_dialog: FileDialog = FileDialog.new()
 var current_file:String = ""
 
+var updated = false
+
 func _ready() -> void:
     load_dialogues()
+    set_update(updated)
 
+#region helper
 func load_dialogues():
     save_file_dialog.add_filter("*.json")
     add_child(save_file_dialog)
@@ -37,7 +42,34 @@ func load_dialogues():
 
 func extract_name(d:Node) -> String:
     return str(d.name)
+#endregion
 
+#region closing
+
+func close(force:bool = false):
+    if updated == false or force == true:
+        current_index = 1
+        current_file = ""
+        current_link = null
+        for i in dialogue_nodes:
+            i.queue_free()
+        print(dialogue_nodes)
+        dialogue_nodes.clear()
+        for i in dialogues.get_children():
+            i.queue_free()
+    else:
+        var confirm = ConfirmationDialog.new()
+        add_child(confirm)
+        confirm.get_label().text = "File not saved!!!\n Close anyway?"
+        confirm.get_label().horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+        confirm.show()
+        confirm.canceled.connect(func(): confirm.queue_free())
+        confirm.confirmed.connect(func(): close(true))
+        
+
+#endregion
+
+#region saving
 func save_to(file):
     current_file = file
     file = FileAccess.open(file,FileAccess.WRITE_READ)
@@ -54,6 +86,8 @@ func save_to(file):
         content.merge(key_dict)
     file.store_string(JSON.stringify(content))
     file.close()
+    set_update(false)
+
 
 func format_dialogue(key:DialogueNode) -> Dictionary:
     var key_dict = key.to_json()
@@ -90,6 +124,9 @@ func format_option(option:ChoiceOption):
         next.append(extract_name(value))
     return key_dict
     
+#endregion
+
+#region loading
 func load_save(file):
     if not FileAccess.file_exists(file):
         print("file does not exsist",file)
@@ -112,6 +149,7 @@ func load_save(file):
             "e":
                 var event:EventNode = spawn_event()
                 event.set_from_json(id,content.get(id))
+    set_update(false)
 
     for id:String in content.keys(): # create link list values 
         var id_arr = id.split("#")
@@ -141,7 +179,9 @@ func load_save(file):
                     link_nodes(dialogues.get_node(id))
                     link_nodes(dialogues.get_node(i))
                 pass
+#endregion
 
+#region process
 func parse_dialogue_nodes() -> String:
     var text = ""
     for key in dialogue_nodes:
@@ -176,6 +216,7 @@ func _input(event: InputEvent) -> void:
     else:
         Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
+
 func _draw() -> void:
     for key in dialogue_nodes:
         var start = key.node_container.get_global_rect()
@@ -192,6 +233,9 @@ func _draw() -> void:
             draw_circle(start.end - Vector2(0,start.size.y /2),5,Color.DARK_GREEN)
         draw_circle(start.position + Vector2(0,start.size.y/2),5,Color.DARK_RED)
 
+#endregion
+
+#region spawn
 func spawn_dialogue():
     var d = DIALOGUE_NODE.instantiate()
     d.name = "d#" + str(current_index)
@@ -226,6 +270,9 @@ func spawn_event():
     e.free_me.connect(free_node)
     return e
 
+#endregion
+
+#region handling signals
 func _on_choice_option_created(choice_option:ChoiceOption,choice_node:ChoiceNode):
     choice_option.name = "co#"+str(current_index)
     choice_option.label.text = choice_option.name # don't know where to place this 
@@ -234,6 +281,7 @@ func _on_choice_option_created(choice_option:ChoiceOption,choice_node:ChoiceNode
     dialogue_nodes.get(choice_node).append(choice_option)
 
 func free_node(d:DialogueNode):
+    set_update(true)
     if is_instance_valid(current_link):
         current_link.linking = false
     if is_instance_valid(d):
@@ -246,6 +294,7 @@ func free_node(d:DialogueNode):
         d.queue_free()
 
 func link_nodes(d:DialogueNode):
+    set_update(true)
     if is_instance_valid(current_link):
         if d != current_link:
             var arr = dialogue_nodes.get(current_link) as Array
@@ -262,18 +311,28 @@ func link_nodes(d:DialogueNode):
 
 func _on_add_dialogue_button_pressed() -> void:
     spawn_dialogue()
-
+    set_update(true)
+    
 func _on_add_choice_button_pressed() -> void:
     spawn_choice()
+    set_update(true)
 
 func _on_add_event_button_pressed() -> void:
     spawn_event()
+    set_update(true)
 
 func _on_hide_info_pressed() -> void:
     info_container.visible = not info_container.visible
 
 func _on_save_script_button_pressed() -> void:
+    if current_file.is_empty():
+        save_file_dialog.show()
+    else:
+        save_to(current_file)
+
+func _on_menu_toolbar_save_file_as() -> void:
     save_file_dialog.show()
+
 
 func _on_load_script_button_pressed() -> void:
     load_file_dialog.show()
@@ -281,9 +340,26 @@ func _on_load_script_button_pressed() -> void:
 func _on_auto_save_timer_timeout() -> void:
     if !current_file.is_empty():
         save_to(current_file)
-        var autosave_label = Label.new()
-        autosave_label.text = "Saving"
-        autosave_label.position.x += 300
-        add_child(autosave_label)
+        set_update(false) 
+        menu_toolbar.set_auto_save_visible(true)
         await get_tree().create_timer(3).timeout
-        autosave_label.queue_free()
+        menu_toolbar.set_auto_save_visible(false)
+        
+
+func exit_scene():
+    if updated == true:
+        var confirm = ConfirmationDialog.new()
+        add_child(confirm)
+        confirm.get_label().text = "File not saved!!!\n Close anyway?"
+        confirm.get_label().horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+        confirm.show()
+        confirm.canceled.connect(func(): confirm.queue_free())
+        confirm.confirmed.connect(func(): get_tree().quit())
+    else:
+        get_tree().quit()
+
+func set_update(update:bool = true):
+    updated = update
+    menu_toolbar.set_save_icon(update)
+    pass
+#endregion

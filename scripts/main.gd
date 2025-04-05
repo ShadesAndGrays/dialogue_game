@@ -1,6 +1,6 @@
 extends Node2D
 const DIALOGUE_SYSTEM = preload("res://scene/dialogue_system.tscn")
-var story = Story.new("res://dialogue/enlightenment.json")
+var story = Story.new("res://dialogue/demon_king_castle.json")
 
 var current_dialogue:Dialogue = null
 

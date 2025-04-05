@@ -3,10 +3,10 @@
 [x] Dialogue system
     [x] Dialogue message system
     [x] Dialogue choice system
-[X] Scene changer
-[ ] waypoint node in dialog system
-[ ] autosave dialog creating system
-[ ] info node in dialog creating system
+    [X] Scene changer
+    [x] autosave dialog creating system
+    [ ] waypoint node in dialog system
+    [ ] info node in dialog creating system
 
 
 # story
